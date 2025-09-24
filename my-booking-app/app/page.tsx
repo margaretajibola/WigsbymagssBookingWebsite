@@ -9,14 +9,14 @@ export default function Home() {
 
       <div className="flex gap-4">
         <Link
-          href="/login"
+          href="auth/login"
           className="px-6 py-3 bg-purple-200 text-black rounded"
         >
           LOGIN
         </Link>
 
         <Link
-          href="/signup"
+          href="auth/signup"
           className="px-6 py-3 bg-purple-200 text-black rounded"
         >
           SIGNUP
