@@ -1,16 +1,26 @@
 // components/DoubleNav.tsx
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function DoubleNav() {
   return (
     <header>
       {/* Top nav */}
       <nav className="bg-purple-200 text-white px-6 py-3 flex items-center relative border-b-1 border-gray-400">
-        {/* Centered brand name */}
-        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-2xl text-black">
-          WIGSBYMAGSS
-        </h1>
+        {/* Centered brand name and logo*/}
+        <div className="flex items-center gap-3 absolute left-1/2 transform -translate-x-1/2">
+          <h1 className="text-2xl text-black">WIGSBYMAGSS</h1>
+          <div className="w-10 h-10 rounded-full overflow-hidden">
+            <Image
+              src="/logo.png"
+              alt="My Logo"
+              width={40}
+              height={40}
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+        </div>
 
         {/* Right-aligned auth buttons */}
         <div className="ml-auto flex gap-4">
