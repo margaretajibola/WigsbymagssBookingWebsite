@@ -63,9 +63,9 @@ export default function DoubleNav() {
           </div>
         </div>
 
-        <Link href="/policies" className="text-black">POLICES</Link>
         <Link href="/calendar" className="text-black">CALENDER</Link>
         <Link href="/reviews" className="text-black">REVIEWS</Link>
+        <Link href="/policies" className="text-black">POLICES</Link>
       </nav>
     </header>
   );
