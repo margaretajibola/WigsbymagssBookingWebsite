@@ -54,6 +54,11 @@ next-env.d.ts
 /playwright-report/
 /playwright/.cache
 
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+
 # Misc
 *.log
 public/img1.png
