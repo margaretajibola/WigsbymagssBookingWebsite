@@ -1,9 +1,23 @@
 // components/DoubleNav.tsx
 
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import Profile from "@/components/Profile";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export default function DoubleNav() {
+  const { user, loading } = useCurrentUser();
+
+  if (loading) {
+    // optional placeholder while checking session
+    return (
+      <div className="ml-auto flex gap-4">
+        <span className="text-gray-400">Loading...</span>
+      </div>
+    );
+  }
   return (
     <header>
       {/* Top nav */}
@@ -23,8 +37,24 @@ export default function DoubleNav() {
         </div>
 
         {/* Right-aligned auth buttons */}
-        <div className="ml-auto flex gap-4">
-          <Link href="/" className="text-black">LOGIN/SIGNUP</Link>
+        <div className="ml-auto flex items-center gap-4">
+          {user ? (
+            // ✅ If logged in → show logout
+            <>
+              <span className="text-gray-700">Hi, {user.name}</span>
+              <Profile />
+            </>
+          ) : (
+            // ❌ If not logged in → show login/signup links
+            <>
+              <Link href="/auth/login" className="text-black">
+                LOGIN
+              </Link>
+              <Link href="/auth/signup" className="text-black">
+                SIGNUP
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
