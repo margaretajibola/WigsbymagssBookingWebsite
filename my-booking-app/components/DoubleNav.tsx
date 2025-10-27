@@ -65,7 +65,7 @@ export default function DoubleNav() {
         {/* Dropdown for Services */}
         <div className="relative group">
           <button className="text-black">
-            SERVICES ▾
+            BOOK A SERVICE ▾
           </button>
 
           <div
@@ -92,8 +92,6 @@ export default function DoubleNav() {
             </Link>
           </div>
         </div>
-
-        <Link href="/calendar" className="text-black">CALENDER</Link>
         <Link href="/reviews" className="text-black">REVIEWS</Link>
         <Link href="/policies" className="text-black">POLICES</Link>
       </nav>

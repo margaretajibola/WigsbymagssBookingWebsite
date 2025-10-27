@@ -3,7 +3,7 @@ import { verifyJwt } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function DashboardPage() {
+export default async function Dashboard() {
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
   const payload = token ? verifyJwt(token as string) : null;
