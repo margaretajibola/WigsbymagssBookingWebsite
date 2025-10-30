@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +13,8 @@ export default function Profile() {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const { user } = useCurrentUser();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
@@ -31,7 +34,12 @@ export default function Profile() {
 
   function handleDashboard() {
     handleClose(); // closes menu first
-    router.push("/dashboard");
+    console.log(user?.role);
+    if (user?.role === "admin") {
+      router.push("/admin");
+    } else {
+      router.push("/user");
+    }
   }
 
   return (

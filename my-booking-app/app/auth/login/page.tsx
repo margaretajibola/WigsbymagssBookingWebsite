@@ -19,8 +19,17 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
+      const data = await res.json();
+      const role = data.user?.role || "user"; // fallback to 'user' if missing
+
       window.dispatchEvent(new Event("user-refresh"));
-      router.push("/dashboard");
+
+      if(role === "admin"){
+        router.push("/admin");
+      }
+      else{
+        router.push("/user");
+      }
     } else {
       const data = await res.json();
       alert(data.error || "Login failed");

@@ -3,7 +3,8 @@
 'use client'
 
 import { useState } from "react";
-import { Box, Grid, Card, CardActionArea, CardContent, Typography, TextField, Button } from "@mui/material";
+import { Box, Grid, Card, CardActionArea, CardContent, Typography, TextField } from "@mui/material";
+import { ArrowRight } from "lucide-react"; // ✅ import arrow icons
 import { useRouter } from "next/navigation";
 import { Service } from "@/types/service";
 
@@ -35,8 +36,8 @@ export default function OtherServices() {
     };
 
     return(
-        <Box sx={{p:4}}>
-            <Typography sx={{color: 'black'}}>
+        <Box sx={{p:6}}>
+            <Typography sx={{color: 'black', textTransform:'uppercase'}}>
                 SELECT SERVICE - OTHER SERVICES
             </Typography>
 
@@ -45,15 +46,16 @@ export default function OtherServices() {
                 {otherServices.map((service) => (
                 <Grid size={12} key={service.id}>
                     <Card
-                    sx={{
-                        border: selectedService === service.id ? "2px solid #673ab7" : "1px solid #ccc", width:500, height:100
+                     sx={{
+                        borderRadius: "16px",
+                        background: selectedService === service.id ? "#E1BEE7" : "#F3E5F5", width:500, height:100
                     }}>
                         <CardActionArea 
                             onClick={() => setSelectedService(service.id)}
                             sx={{
                             height: "100%",
                             "&:hover": {
-                            backgroundColor: "rgba(0, 0, 0, 0.04)",
+                            backgroundColor: "#EDE7F6",
                             },
                             }}>
                             <CardContent>
@@ -69,7 +71,7 @@ export default function OtherServices() {
             {/* Notes Field */}
             <Box sx={{ mt: 4, p: 2}}>
                 <TextField
-                sx={{width:700}}
+                sx={{width:350}}
                 multiline
                 rows={4}
                 label="Additional Notes"
@@ -80,14 +82,18 @@ export default function OtherServices() {
 
             {/* Next Button */}
             <Box sx={{ mt: 4, textAlign: "right" }}>
-                <Button
-                sx={{backgroundColor:'black'}}
-                variant="contained"
-                size="large"
-                onClick={handleNext}
-                >
-                Next
-                </Button>
+                <button
+                    disabled={!selectedService}
+                    className={`p-3 rounded-full shadow-sm transition ${
+                        selectedService
+                        ? "bg-purple-300 hover:bg-purple-300 text-white"
+                        : "bg-gray-100 cursor-not-allowed text-gray-400"
+                    }`}
+                    aria-label="Next"
+                    onClick={handleNext}
+                    >
+                    <ArrowRight className="w-6 h-6" />
+                </button>
             </Box>
 
         </Box>

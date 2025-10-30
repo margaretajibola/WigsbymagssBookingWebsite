@@ -16,3 +16,13 @@ model User {
   role      String   @default("user")
   createdAt DateTime @default(now())
 }
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Float
+  category    String   // e.g. "  Installations", "Sewins", "Others"
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
