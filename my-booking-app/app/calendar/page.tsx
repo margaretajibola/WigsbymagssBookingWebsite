@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ArrowLeft, ArrowRight } from "lucide-react"; // ✅ import arrow icons
 
-const CalendarPicker = dynamic(() => import("@/components/CalendarPicker"), {
+const CalendarPicker = dynamic(() => import("@/components/calendar/CalendarPicker"), {
   ssr: false,
 });
-import TimeSelector from "@/components/TimeSelector";
+import TimeSelector from "@/components/calendar/TimeSelector";
 
 export default function Calendar() {
   const router = useRouter();

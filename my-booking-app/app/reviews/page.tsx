@@ -3,7 +3,7 @@
 "use client"
 
 import { Grid, Box, TextField, Button, Typography, Card, CardMedia, CardContent} from "@mui/material";
-import ImageUpload from "@/components/ImageUpload";
+import ImageUpload from "@/components/reviews/ImageUpload";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Review } from "@/types/review";

@@ -2,7 +2,7 @@
 
 import type { Metadata } from "next";
 import "./globals.css";
-import DoubleNav from "@/components/DoubleNav";
+import DoubleNav from "@/components/layout/DoubleNav";
 
 import { Julius_Sans_One, Italiana } from "next/font/google";
 
