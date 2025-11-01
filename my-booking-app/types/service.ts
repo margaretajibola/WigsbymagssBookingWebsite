@@ -1,8 +1,9 @@
 // src/types/service.ts
 
 export type Service = {
-  id: string;
+  id: number;
   name: string;
   price: number;
+  category: string;
   extraNotes?: string; // optional
 };

@@ -1,11 +1,15 @@
-// app/admin/page.tsx (server component)
+// app/admin/page.tsx 
 
 export default async function AdminDashboard() {
 
   // render protected content...
   return (
-    <div className="flex flex-col items-center justify-center h-[80vh] gap-6">
-      <h1 className="text-2xl text-black">Hi Admin - Manage your profile, services, and bookings here...</h1>
+    <div>
+      <h1 className="text-2xl font-medium text-purple-700 mb-6">
+        Admin Dashboard
+      </h1>
+      <p className="text-gray-600">Overview of services, bookings, and clients.</p>
+      {/* Add DashboardStats, RecentBookingsTable, etc. */}
     </div>
   );
 }
