@@ -31,6 +31,10 @@ export default function ServiceForm({ editingService, onSave, onCancel }: Props)
     }
   }, [editingService]);
 
+  function resetForm() {
+    setForm({ name: "", price: "", extraNotes: "", category: "" });
+  } 
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     onSave({
@@ -39,6 +43,10 @@ export default function ServiceForm({ editingService, onSave, onCancel }: Props)
       extraNotes: form.extraNotes,
       category: form.category,
     });
+
+    if (!editingService) {
+      resetForm(); // Clear form after creating new service
+    }
   }
 
   return (

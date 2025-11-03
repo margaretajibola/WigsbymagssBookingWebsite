@@ -16,18 +16,22 @@ export default function OtherServices() {
 
     const router = useRouter();
 
-    // Fetch all other services
+     // Fetch all other services from API
     useEffect(() => {
         fetchServices();
     }, []);
 
     async function fetchServices() {
-        const res = await fetch("/api/services");
-        const data = await res.json();
-        const filteredData = data.filter((service: Service) => service.category === "Other Services");
-        setServices(filteredData);
+        try{
+            const res = await fetch("/api/services");
+            const data = await res.json();
+            const filteredData = data.filter((service: Service) => service.category === "Other Services");
+            setServices(filteredData);
+        }catch (error) {
+            console.error("Failed to fetch reviews:", error);
+        }
     }
-
+        
     const handleNext = () => {
         if (!selectedService) {
         alert("Please select a service before continuing.");

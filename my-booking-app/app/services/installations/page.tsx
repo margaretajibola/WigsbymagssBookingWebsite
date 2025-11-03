@@ -16,16 +16,20 @@ export default function Installations() {
 
     const router = useRouter();
 
-    // Fetch all installation services
+    // Fetch all installation services from API
     useEffect(() => {
         fetchServices();
     }, []);
 
     async function fetchServices() {
-        const res = await fetch("/api/services");
-        const data = await res.json();
-        const filteredData = data.filter((service: Service) => service.category === "Installations");
-        setServices(filteredData);
+        try{
+            const res = await fetch("/api/services");
+            const data = await res.json();
+            const filteredData = data.filter((service: Service) => service.category === "Installations");
+            setServices(filteredData);
+        }catch (error) {
+            console.error("Failed to fetch reviews:", error);
+        }
     }
     
 

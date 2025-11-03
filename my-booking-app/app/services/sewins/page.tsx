@@ -16,16 +16,20 @@ export default function Sewins() {
 
     const router = useRouter();
 
-    // Fetch all sew-in services
+     // Fetch all sew-in from API
     useEffect(() => {
         fetchServices();
     }, []);
 
     async function fetchServices() {
-        const res = await fetch("/api/services");
-        const data = await res.json();
-        const filteredData = data.filter((service: Service) => service.category === "Sew-ins");
-        setServices(filteredData);
+        try{
+            const res = await fetch("/api/services");
+            const data = await res.json();
+            const filteredData = data.filter((service: Service) => service.category === "Sew-ins");
+            setServices(filteredData);
+        }catch (error) {
+            console.error("Failed to fetch reviews:", error);
+        }
     }
 
     const handleNext = () => {
