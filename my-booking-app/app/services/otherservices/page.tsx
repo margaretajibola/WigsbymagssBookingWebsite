@@ -1,25 +1,32 @@
-// app/services/installations/page.tsx
+// app/services/otherservices/page.tsx
 
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Grid, Card, CardActionArea, CardContent, Typography, TextField } from "@mui/material";
 import { ArrowRight } from "lucide-react"; // ✅ import arrow icons
 import { useRouter } from "next/navigation";
 import { Service } from "@/types/service";
 
-const otherServices: Service[] = [
-    {id: 'frontalcustom', name: 'Frontal Customization', price: 70},
-    {id: 'closurecustom', name: 'Closure Customization', price: 65},
-    {id: 'revamp', name: 'Wig Revamp and Style', price: 75},
-    {id: 'wash', name: 'Wig Wash and Style', price: 55},
-];
 
 export default function OtherServices() {
-    const [selectedService, setSelectedService] = useState<string | null>(null);
+    const [services, setServices] = useState<Service[]>([]);
+    const [selectedService, setSelectedService] = useState<number | null>(null);
     const [notes, setNotes] = useState("");
 
     const router = useRouter();
+
+    // Fetch all other services
+    useEffect(() => {
+        fetchServices();
+    }, []);
+
+    async function fetchServices() {
+        const res = await fetch("/api/services");
+        const data = await res.json();
+        const filteredData = data.filter((service: Service) => service.category === "Other Services");
+        setServices(filteredData);
+    }
 
     const handleNext = () => {
         if (!selectedService) {
@@ -28,7 +35,7 @@ export default function OtherServices() {
         }
 
         // Example: Save selection to local storage or send to backend
-        localStorage.setItem("bookingService", selectedService);
+        localStorage.setItem("bookingService", String(selectedService));
         localStorage.setItem("bookingNotes", notes);
 
         // Navigate to next booking step
@@ -43,7 +50,7 @@ export default function OtherServices() {
 
             {/* Services Grid */}
             <Grid container spacing={3} sx={{p:2}}>
-                {otherServices.map((service) => (
+                {services.map((service) => (
                 <Grid size={12} key={service.id}>
                     <Card
                      sx={{

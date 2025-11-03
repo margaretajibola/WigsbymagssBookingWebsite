@@ -1,24 +1,32 @@
-// app/services/installations/page.tsx
+// app/services/sewins/page.tsx
 
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Grid, Card, CardActionArea, CardContent, Typography, TextField } from "@mui/material";
 import { ArrowRight } from "lucide-react"; // ✅ import arrow icons
 import { useRouter } from "next/navigation";
 import { Service } from "@/types/service";
 
-const sewinServices : Service[] =[
-    {id: 'tradsewin', name: 'Traditional Leave-Out Sew-In', price: 130, extraNotes: 'Includes braid down and styling'},
-    {id: 'closuresewin', name: 'Closure Sew-In', price: 140, extraNotes: 'Includes braid down, customization, and styling'},
-    {id: 'frontalsewin', name: 'Frontal Sew-In', price: 160, extraNotes: 'Includes braid down, customization, and styling'},
-];
 
 export default function Sewins() {
-    const [selectedService, setSelectedService] = useState<string | null>(null);
+    const [services, setServices] = useState<Service[]>([]);
+    const [selectedService, setSelectedService] = useState<number | null>(null);
     const [notes, setNotes] = useState("");
 
     const router = useRouter();
+
+    // Fetch all sew-in services
+    useEffect(() => {
+        fetchServices();
+    }, []);
+
+    async function fetchServices() {
+        const res = await fetch("/api/services");
+        const data = await res.json();
+        const filteredData = data.filter((service: Service) => service.category === "Sew-ins");
+        setServices(filteredData);
+    }
 
     const handleNext = () => {
         if (!selectedService) {
@@ -27,7 +35,7 @@ export default function Sewins() {
         }
 
         // Example: Save selection to local storage or send to backend
-        localStorage.setItem("bookingService", selectedService);
+        localStorage.setItem("bookingService", String(selectedService));
         localStorage.setItem("bookingNotes", notes);
 
         // Navigate to next booking step
@@ -42,7 +50,7 @@ export default function Sewins() {
 
             {/* Services Grid */}
             <Grid container spacing={3} sx={{p:2}}>
-                {sewinServices.map((service) => (
+                {services.map((service) => (
                 <Grid size={12} key={service.id}>
                     <Card
                      sx={{

@@ -49,21 +49,19 @@ export default function AdminServices() {
 
     return (
         <div>
-        <h1 className="text-2xl font-medium mb-4 text-purple-700">Manage Services</h1>
+            <h1 className="text-2xl font-medium mb-4 text-gray-600">Manage Services</h1>
+            <ServiceForm
+            editingService={editingService}
+            onSave={handleSave}
+            onCancel={() => setEditingService(null)}
+            />
 
-        <h2 className="text-md mb-4 text-gray-600">Create a new service</h2>
-        <ServiceForm
-        editingService={editingService}
-        onSave={handleSave}
-        onCancel={() => setEditingService(null)}
-         />
-
-        <h2 className="text-md mb-4 text-gray-600">View all services</h2>
-        <ServiceList
-        services={services}
-        onEdit={setEditingService}
-        onDelete={handleDelete}
-        />
+            <h1 className="text-2xl mb-4 text-gray-600">All services</h1>
+            <ServiceList
+            services={services}
+            onEdit={setEditingService}
+            onDelete={handleDelete}
+            />
         </div>
 
     );
