@@ -1,37 +1,69 @@
-// app/services/reviews/page.tsx
+// app/reviews/page.tsx
 
 "use client"
 
 import { Grid, Box, TextField, Button, Typography, Card, CardMedia, CardContent} from "@mui/material";
 import ImageUpload from "@/components/reviews/ImageUpload";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Review } from "@/types/review";
 
-//mock reviews data
-const reviews : Review[] = [
-    {id: 1, text: "Love it :)", image: "/img1.png"},
-    {id: 2, text: "Great customer service!"},
-    {id: 3, text: "In loveeee with my hair"},
+// //mock reviews data
+// const reviews : Review[] = [
+//     {id: 1, text: "Love it :)", image: "/img1.png"},
+//     {id: 2, text: "Great customer service!"},
+//     {id: 3, text: "In loveeee with my hair"},
 
-]
+// ]
 
 export default function Reviews() {
     const [review, setReview] = useState("");
+    const [image, setImage] = useState<string | null>(null); 
+    const [fileName, setFileName] = useState<string | null>(null); 
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [, setLoading] = useState(false);
 
-    const router = useRouter();
+     // Fetch reviews from API
+    useEffect(() => {
+        fetchReviews();
+    }, []);
 
-    const handlePost = () => {
+    const fetchReviews = async () => {
+        try {
+            const res = await fetch("/api/reviews");
+            const data = await res.json();
+            setReviews(data);
+        } catch (error) {
+            console.error("Failed to fetch reviews:", error);
+        }
+    };
+
+    const handlePost = async () => {
         if (!review) {
         alert("Write a review before continuing");
         return;
         }
 
-        // Example: Save selection to local storage or send to backend
-        localStorage.setItem("customerReviews", review);
-
-        // Navigate to next booking step
-        router.push("/reviews");
+        setLoading(true);
+        try{
+            const res = await fetch("/api/reviews", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: review, image: image }),
+            });
+            if (res.ok) {
+                setReview(""); // Clear form
+                setImage(null); // Clear image
+                setFileName(null); // Clear file name
+                fetchReviews(); // Refresh reviews list
+            } else {
+                alert("Failed to post review. Please try again.");
+            }
+        }catch(error){
+            console.error("Error posting review:", error);
+            alert("Failed to post review. Please try again.");
+        }finally{
+            setLoading(false);
+        }
     };
 
     return(
@@ -53,7 +85,7 @@ export default function Reviews() {
                     </Box>
 
                     {/* Upload Image */}
-                    <ImageUpload />
+                    <ImageUpload image={image} setImage={setImage} fileName={fileName} setFileName={setFileName}/>
 
                     {/* Next Button */}
                     <Box sx={{ mt: 2, ml:33}}>

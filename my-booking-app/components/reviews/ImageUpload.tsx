@@ -1,16 +1,29 @@
 // components/ImageUpload.tsx
 
-import React, { useState } from "react";
+import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-const ImageUpload: React.FC = () => {
-  const [image, setImage] = useState<string | null>(null);
+interface ImageUploadProps {
+  image: string | null;
+  setImage: (image: string | null) => void;
+  fileName: string | null;
+  setFileName: (fileName: string | null) => void;
+}
 
+
+const ImageUpload: React.FC<ImageUploadProps> = ({ setImage, fileName, setFileName }) =>  {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setImage(URL.createObjectURL(file)); // preview
+      setFileName(file.name); //preview
+
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result as string); // This will be base64 string
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -41,19 +54,10 @@ const ImageUpload: React.FC = () => {
         UPLOAD IMAGE
       </Typography>
 
-      {image && (
-        <Box
-          component="img"
-          src={image}
-          alt="Uploaded Preview"
-          sx={{
-            width: 150,
-            height: 150,
-            borderRadius: "50%", // makes it round
-            objectFit: "cover",
-            mt: 2,
-          }}
-        />
+      {fileName && (
+        <Typography sx={{ mt: 2, color: "black", fontSize: "0.9rem" }}>
+          Selected: {fileName}
+        </Typography>
       )}
     </Box>
   );
