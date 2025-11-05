@@ -1,4 +1,4 @@
-// src/types/service.ts
+// /types/service.ts
 
 export type Service = {
   id: number;

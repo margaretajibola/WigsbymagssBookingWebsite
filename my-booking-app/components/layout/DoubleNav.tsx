@@ -48,10 +48,10 @@ export default function DoubleNav() {
             // ❌ If not logged in → show login/signup links
             <>
               <Link href="/auth/login" className="text-black">
-                LOGIN
+                Login
               </Link>
               <Link href="/auth/signup" className="text-black">
-                SIGNUP
+                Signup
               </Link>
             </>
           )}
@@ -74,19 +74,19 @@ export default function DoubleNav() {
           >
             <Link
               href="/services/installations"
-              className="block px-4 py-2 hover:bg-gray-50"
+              className="block px-4 py-2 hover:bg-purple-300"
             >
               WIG INSTALLATIONS
             </Link>
             <Link
               href="/services/sewins"
-              className="block px-4 py-2 hover:bg-gray-50"
+              className="block px-4 py-2 hover:bg-purple-300"
             >
               SEW-INS
             </Link>
             <Link
               href="/services/otherservices"
-              className="block px-4 py-2 hover:bg-gray-50"
+              className="block px-4 py-2 hover:bg-purple-300"
             >
               OTHER SERVICES
             </Link>

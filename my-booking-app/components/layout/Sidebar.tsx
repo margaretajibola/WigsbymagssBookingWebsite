@@ -12,7 +12,6 @@ export default function Sidebar({ role }: { role: "admin" | "user" }) {
 
   const userLinks = [
     { name: "Dashboard", path: "/user" },
-    { name: "Bookings", path: "/user/bookings" },
     { name: "Profile", path: "/user/profile" },
   ];
 
