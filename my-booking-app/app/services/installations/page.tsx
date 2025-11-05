@@ -39,12 +39,12 @@ export default function Installations() {
         return;
         }
 
-        // Example: Save selection to local storage or send to backend
-        localStorage.setItem("bookingService", String(selectedService));
-        localStorage.setItem("bookingNotes", notes);
-
-        // Navigate to next booking step
-        router.push("/calendar");
+        // Navigate to calendar with serviceId and notes as URL params
+        const params = new URLSearchParams({
+            serviceId: String(selectedService),
+            notes: notes
+        });
+        router.push(`/calendar?${params.toString()}`);
     };
 
     return(
@@ -101,7 +101,7 @@ export default function Installations() {
                     disabled={!selectedService}
                     className={`p-3 rounded-full shadow-sm transition ${
                         selectedService
-                        ? "bg-purple-300 hover:bg-purple-300 text-white"
+                        ? "bg-purple-300 text-white hover:bg-purple-600"
                         : "bg-gray-100 cursor-not-allowed text-gray-400"
                     }`}
                     aria-label="Next"

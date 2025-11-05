@@ -15,6 +15,7 @@ model User {
   name      String?
   role      String   @default("user")
   createdAt DateTime @default(now())
+  bookings  Booking[]
 }
 
 model Service {
@@ -25,6 +26,31 @@ model Service {
   extraNotes       String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  serviceId Int
+  date      DateTime
+  time      String
+  notes     String?
+  status    String   @default("confirmed")
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id])
+  service   Service  @relation(fields: [serviceId], references: [id])
+}
+
+model Availability {
+  id        Int      @id @default(autoincrement())
+  date      DateTime @db.Date
+  timeSlots String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([date])
 }
 
 model Review {
