@@ -106,7 +106,7 @@ export default function Calendar() {
   };
 
 return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-white flex flex-col mt-15 ml-45">
       <div className="w-full max-w-5xl">
         <h1 className="text-gray-700 text-m uppercase tracking-wider mb-12 text-center">
           Select Date and Time

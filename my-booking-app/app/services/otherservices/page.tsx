@@ -3,10 +3,11 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { Box, Grid, Card, CardActionArea, CardContent, Typography, TextField } from "@mui/material";
+import { Box, Typography, TextField } from "@mui/material";
 import { ArrowRight } from "lucide-react"; // ✅ import arrow icons
 import { useRouter } from "next/navigation";
 import { Service } from "@/types/service";
+import ServiceCard from "@/components/services/ServiceCard";
 
 
 export default function OtherServices() {
@@ -52,32 +53,11 @@ export default function OtherServices() {
                 SELECT SERVICE - OTHER SERVICES
             </Typography>
 
-            {/* Services Grid */}
-            <Grid container spacing={3} sx={{p:2}}>
-                {services.map((service) => (
-                <Grid size={12} key={service.id}>
-                    <Card
-                     sx={{
-                        borderRadius: "16px",
-                        background: selectedService === service.id ? "#E1BEE7" : "#F3E5F5", width:500, height:100
-                    }}>
-                        <CardActionArea 
-                            onClick={() => setSelectedService(service.id)}
-                            sx={{
-                            height: "100%",
-                            "&:hover": {
-                            backgroundColor: "#EDE7F6",
-                            },
-                            }}>
-                            <CardContent>
-                                <Typography variant="body1"> Service Type: {service.name}</Typography>
-                                <Typography variant="body1"> Price: {service.price} CAD</Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
-                ))}
-            </Grid>
+            <ServiceCard 
+                services={services}
+                selectedService={selectedService}
+                setSelectedService={setSelectedService}
+            />
 
             {/* Notes Field */}
             <Box sx={{ mt: 4, p: 2}}>
@@ -92,7 +72,7 @@ export default function OtherServices() {
             </Box>
 
             {/* Next Button */}
-            <Box sx={{ mt: 4, textAlign: "right" }}>
+            <Box sx={{ mt: 2, ml: 75 }}>
                 <button
                     disabled={!selectedService}
                     className={`p-3 rounded-full shadow-sm transition ${
