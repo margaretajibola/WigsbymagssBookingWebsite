@@ -26,12 +26,17 @@ It provides an intuitive interface for users and a management dashboard for the 
 1. Clone the repository: git clone https://github.com/margaretajibola/WigsbymagssBookingWebsite.git
 2. Navigate into the project directory: cd WigsbymagssBookingWebsite/my-booking-app
 3. Install dependencies: npm install
-4. Create a .env file in the root directory and include your own environment variables (depending on your setup): # Example variables – adjust based on your configuration(DATABASE_URL="your_postgresql_connection_url"  NEXTAUTH_SECRET="your_generated_secret_key" NEXTAUTH_URL="http://localhost:3000")
-5. Apply database migrations and generate the Prisma client: npx prisma migrate dev , npx prisma generate
-6. Start the development server: npm run dev
-7. Visit http://localhost:3000 to view the app.
+4. Create a `.env` file with your environment variables (e.g., `DB_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, etc).
+5. Start the development server: npm run dev
+6. Visit http://localhost:3000 to view the app.
 
-🧩 Features
+### Usage
+- Browse available wig styling services  
+- Select a service, choose a date/time, and submit booking  
+- View your bookings
+- Admin side: Manage services, View bookings
+
+## 🧩 Features
 - Responsive UI with Tailwind CSS
 - Browse services and pricing
 - Select appointment dates and book sessions
@@ -41,7 +46,7 @@ It provides an intuitive interface for users and a management dashboard for the 
 - End-to-end testing using Playwright
 - Built with type safety and scalability in mind
 
-🧪 Testing
+## 🧪 Testing
 Run Playwright tests:
 npx playwright test
 
