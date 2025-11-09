@@ -15,6 +15,7 @@ export default function BookingList({ bookings }: Props) {
         <thead className="bg-purple-100">
           <tr>
             <th className="text-left py-3 px-4 text-gray-600">Appointment Date</th>
+            <th className="text-left py-3 px-4 text-gray-600">Appointment Time</th>
             <th className="text-gray-600">Service Type</th>
             <th className="text-gray-600">Price</th>
             <th className="text-gray-600">Client Notes</th>
@@ -26,6 +27,7 @@ export default function BookingList({ bookings }: Props) {
           {bookings.map(booking => (
             <tr key={booking.id}>
               <td className="py-2 px-4 text-black">{new Date(booking.date).toLocaleDateString()}</td>
+              <td className="text-center text-black">{booking.time}</td>
               <td className="text-center text-black">{booking.service.name}</td>
               <td className="text-center text-black">{booking.service.price} CAD</td>
               <td className="text-center text-black">{booking.notes}</td>
