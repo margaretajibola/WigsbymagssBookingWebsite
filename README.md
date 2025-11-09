@@ -26,14 +26,8 @@ It provides an intuitive interface for users and a management dashboard for the 
 1. Clone the repository: git clone https://github.com/margaretajibola/WigsbymagssBookingWebsite.git
 2. Navigate into the project directory: cd WigsbymagssBookingWebsite/my-booking-app
 3. Install dependencies: npm install
-4. Create a .env file in the root directory and include your own environment variables (depending on your setup):
-# Example variables – adjust based on your configuration
-DATABASE_URL="your_postgresql_connection_url"
-NEXTAUTH_SECRET="your_generated_secret_key"
-NEXTAUTH_URL="http://localhost:3000"
-5. Apply database migrations and generate the Prisma client:
-npx prisma migrate dev
-npx prisma generate
+4. Create a .env file in the root directory and include your own environment variables (depending on your setup): # Example variables – adjust based on your configuration(DATABASE_URL="your_postgresql_connection_url"  NEXTAUTH_SECRET="your_generated_secret_key" NEXTAUTH_URL="http://localhost:3000")
+5. Apply database migrations and generate the Prisma client: npx prisma migrate dev , npx prisma generate
 6. Start the development server: npm run dev
 7. Visit http://localhost:3000 to view the app.
 
