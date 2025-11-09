@@ -1,11 +1,18 @@
 import { test as base } from '@playwright/test';
 import { TestDataGenerator } from '@/tests/utils/test-data';
+import { LoginPage } from '@/tests/page-objects/LoginPage';
 
 type AuthFixtures = {
   existingUser: {
     name: string;
     email: string;
     password: string;
+  };
+  loggedInUser: {
+    page: any;
+  };
+  loggedInAdmin: {
+    page: any;
   };
 };
 
@@ -27,6 +34,26 @@ export const test = base.extend<AuthFixtures>({
     
     // Cleanup: Delete user after test (optional)
     // await page.request.delete(`/api/users/${userData.email}`);
+  },
+
+  // Logs in existing user 
+  loggedInUser: async ({ page }, use) => {
+    await page.goto('/auth/login');
+    const loginPage = new LoginPage(page);
+    await loginPage.login('test123@yahoo.com', 'Messenger90@');
+    await page.waitForURL('/user');
+    
+    await use({ page });
+  },
+
+  // Logs in admin
+  loggedInAdmin: async ({ page }, use) => {
+    await page.goto('/auth/login');
+    const loginPage = new LoginPage(page);
+    await loginPage.login('margaretajibola56@yahoo.com', 'Messenger90@');
+    await page.waitForURL('/admin');
+    
+    await use({ page });
   }
 });
 
