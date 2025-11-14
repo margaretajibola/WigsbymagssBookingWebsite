@@ -40,7 +40,7 @@ export const test = base.extend<AuthFixtures>({
   loggedInUser: async ({ page }, use) => {
     await page.goto('/auth/login');
     const loginPage = new LoginPage(page);
-    await loginPage.login('test123@yahoo.com', 'Messenger90@');
+    await loginPage.login('tester2@yahoo.com', 'tester123456789');
     await page.waitForURL('/user');
     
     await use({ page });
@@ -50,7 +50,7 @@ export const test = base.extend<AuthFixtures>({
   loggedInAdmin: async ({ page }, use) => {
     await page.goto('/auth/login');
     const loginPage = new LoginPage(page);
-    await loginPage.login('margaretajibola56@yahoo.com', 'Messenger90@');
+    await loginPage.login('tester@yahoo.com', 'tester123456789');
     await page.waitForURL('/admin');
     
     await use({ page });
