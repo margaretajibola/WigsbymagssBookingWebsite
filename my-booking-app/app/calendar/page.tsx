@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import dynamic from "next/dynamic";
 import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"; // ✅ import arrow icons
+import { BookingWithDetails } from "@/types/booking";
 
 const CalendarPicker = dynamic(() => import("@/components/calendar/CalendarPicker"), {
   ssr: false,
@@ -21,6 +22,7 @@ export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+  const [bookings, setBookings] = useState<BookingWithDetails[]>([]);
   const [newTime, setNewTime] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -44,8 +46,28 @@ export default function Calendar() {
       }
     };
     
+    const fetchBookings = async() => {
+      const res = await fetch("/api/bookings");
+      const data = await res.json();
+      setBookings(data);
+    }
+    
     fetchAvailability();
+    fetchBookings();
   }, [selectedDate]);
+
+  // Get booked times for selected date
+  const getBookedTimes = () => {
+    const dateStr = format(selectedDate, 'yyyy-MM-dd');
+    return bookings
+      .filter(booking => {
+        const bookingDate = format(new Date(booking.date), 'yyyy-MM-dd');
+        return bookingDate === dateStr;
+      })
+      .map(booking => booking.time);
+  };
+
+  const bookedTimes = getBookedTimes();
 
   const addTimeSlot = async () => {
     if (!newTime || availableTimes.includes(newTime)) return;
@@ -86,22 +108,28 @@ export default function Calendar() {
   const handleNext = async () => {
     if (!selectedTime || !serviceId) return;
     
-    const res = await fetch('/api/bookings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        serviceId: parseInt(serviceId),
-        date: selectedDate.toISOString(),
-        time: selectedTime,
-        notes: notes,
-      }),
-    });
-    
-    if (res.ok) {
+    try {
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          serviceId: parseInt(serviceId),
+          date: selectedDate.toISOString(),
+          time: selectedTime,
+          notes: notes,
+        }),
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Booking failed');
+      }
+      
       const booking = await res.json();
       router.push(`/booking-complete?bookingId=${booking.id}`);
-    } else {
-      alert('Booking failed. Please try again.');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Something went wrong';
+      alert(errorMessage);
     }
   };
 
@@ -148,28 +176,34 @@ return (
             <p>Loading available times...</p>
           ) : availableTimes.length > 0 ? (
             <div className="grid grid-cols-2 gap-3 w-full">
-              {availableTimes.map((time) => (
-                <div key={time} className="relative">
-                  <button
-                    onClick={() => !isAdmin && setSelectedTime(time)}
-                    className={`w-full p-3 rounded-lg border transition ${
-                      selectedTime === time && !isAdmin
-                        ? "bg-purple-300 text-white border-purple-300"
-                        : "bg-purple-100 text-gray-700 border-gray-200 hover:border-purple-300"
-                    }`}
-                  >
-                    {time}
-                  </button>
-                  {isAdmin && (
+              {availableTimes.map((time) => {
+                const isBooked = bookedTimes.includes(time);
+                return (
+                  <div key={time} className="relative">
                     <button
-                      onClick={() => removeTimeSlot(time)}
-                      className="absolute -top-2 -right-2 bg-purple-600 text-white rounded-full p-1 hover:bg-purple-900"
+                      onClick={() => !isAdmin && !isBooked && setSelectedTime(time)}
+                      disabled={!isAdmin && isBooked}
+                      className={`w-full p-3 rounded-lg border transition ${
+                        isBooked
+                          ? "bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed"
+                          : selectedTime === time && !isAdmin
+                          ? "bg-purple-300 text-white border-purple-300"
+                          : "bg-purple-100 text-gray-700 border-gray-200 hover:border-purple-300"
+                      }`}
                     >
-                      <Trash2 className="w-3 h-3" />
+                      {time} {isBooked && "(Booked)"}
                     </button>
-                  )}
-                </div>
-              ))}
+                    {isAdmin && (
+                      <button
+                        onClick={() => removeTimeSlot(time)}
+                        className="absolute -top-2 -right-2 bg-purple-600 text-white rounded-full p-1 hover:bg-purple-900"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <p className="text-gray-500">
