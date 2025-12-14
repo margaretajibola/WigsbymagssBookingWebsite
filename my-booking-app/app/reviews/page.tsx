@@ -5,22 +5,18 @@
 import { Grid, Box, TextField, Button, Typography, Card, CardMedia, CardContent} from "@mui/material";
 import ImageUpload from "@/components/reviews/ImageUpload";
 import { useEffect, useState } from "react";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { Review } from "@/types/review";
-
-// //mock reviews data
-// const reviews : Review[] = [
-//     {id: 1, text: "Love it :)", image: "/img1.png"},
-//     {id: 2, text: "Great customer service!"},
-//     {id: 3, text: "In loveeee with my hair"},
-
-// ]
 
 export default function Reviews() {
     const [review, setReview] = useState("");
     const [image, setImage] = useState<string | null>(null); 
     const [fileName, setFileName] = useState<string | null>(null); 
     const [reviews, setReviews] = useState<Review[]>([]);
+    const { user } = useCurrentUser();
     const [, setLoading] = useState(false);
+
+    const isAdmin = user?.role === "admin";
 
      // Fetch reviews from API
     useEffect(() => {
@@ -90,6 +86,7 @@ export default function Reviews() {
                     {/* Next Button */}
                     <Box sx={{ mt: 2, ml:33}}>
                         <Button
+                        disabled={isAdmin}
                         sx={{backgroundColor:'black'}}
                         variant="contained"
                         size="large"

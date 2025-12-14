@@ -14,12 +14,30 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4000',
     trace: 'on-first-retry',
+    actionTimeout: 15000,
+    navigationTimeout: 30000,
   },
 
   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+     {
+      name: 'e2e',
+      testDir: './tests/e2e',
+      use: { ...devices['Desktop Chrome'] }
+    },
+     {
+      name: 'api',
+      testDir: './tests/api',
+      use: { ...devices['Desktop Chrome'] }
+    },
+     {
+      name: 'performance',
+      testDir: './tests/performance',
+      use: { ...devices['Desktop Chrome'] }
+    },
+     {
+      name: 'security',
+      testDir: './tests/security',
+      use: { ...devices['Desktop Chrome'] }
     },
   ],
 

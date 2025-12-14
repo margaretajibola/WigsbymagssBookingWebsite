@@ -3,23 +3,23 @@
 ## 🚀 Features
 - Admin summary dashboard
 - Cancel and Reschedule appointments
-- Notification
+- Notifications
 - Chatbot ?
 
 ## 🧪 Tests
-- API, Database, Security, Perfomance 🚧 
+- API, Database, Security, Perfomance ✅
 - Integration tests 
-- End-to-end tests 🚧 
+- End-to-end tests ✅
 
 ## 📋 Tasks
 - Error handling 
 - Protect routes 
 - Grey out appointment time after booking is complete 
-- Run new test cases
+- Run new test cases ✅
 
 
 ## 🐛 Bug Fixes
-- Fix reviews end-to-end tests 🚧 
+- Fix reviews end-to-end tests ✅
 
 
 ## 📚 Documentation - No pending documentation 
@@ -28,7 +28,7 @@
 ## 🔧 Technical Debt
 - Redesign DoubleNav
 - Redesign SideNav
-- Redesign Loading..
+- Redesign Loading...
 - Make website responsive across various devices 
 - Limit service and appointment list to certain value per page 
 
