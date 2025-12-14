@@ -1,22 +1,33 @@
 // app/api/reviews/route.ts
-
 import { NextResponse } from 'next/server';
 import { prisma } from "@/lib/prisma";
+import { ValidationError, DatabaseError, handleApiError } from "@/lib/errors";
 
-// GET /api/reviews
 export async function GET() {
-  const reviews = await prisma.review.findMany({
-    orderBy: {
-      createdAt: 'desc'
-    }
-  })
+  try {
+    const reviews = await prisma.review.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
 
-  return NextResponse.json(reviews);
+    return NextResponse.json(reviews);
+  } catch{
+    return handleApiError(new DatabaseError('Failed to fetch reviews'));
+  }
 }
 
-// POST /api/reviews
 export async function POST(req: Request) {
-  const data = await req.json();
-  const review = await prisma.review.create({ data });
-  return NextResponse.json(review);
+  try {
+    const data = await req.json();
+    
+    if (!data.text) {
+      throw new ValidationError('Review text is required');
+    }
+    
+    const review = await prisma.review.create({ data });
+    return NextResponse.json(review);
+  } catch (error) {
+    return handleApiError(error);
+  }
 }

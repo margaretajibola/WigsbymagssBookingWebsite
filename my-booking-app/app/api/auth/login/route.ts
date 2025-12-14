@@ -2,19 +2,26 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyPassword, signJwt } from "@/lib/auth";
+import { ValidationError, AuthenticationError, handleApiError } from "@/lib/errors";
 
 export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
-    if (!email || !password) return NextResponse.json({ error: "Missing" }, { status: 400 });
+    
+    if (!email || !password) {
+      throw new ValidationError("Email and password are required");
+    }
 
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+    if (!user) {
+      throw new AuthenticationError("Invalid credentials");
+    }
 
     const ok = await verifyPassword(password, user.password);
-    if (!ok) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+    if (!ok) {
+      throw new AuthenticationError("Invalid credentials");
+    }
 
-    // Sign a JWT with minimal payload
     const token = signJwt({ sub: user.id, email: user.email, role: user.role });
 
     const res = NextResponse.json({
@@ -22,7 +29,6 @@ export async function POST(req: Request) {
       user: { id: user.id, email: user.email, name: user.name, role: user.role },
     });
 
-    // set cookie (httpOnly)
     res.cookies.set({
       name: "session",
       value: token,
@@ -30,12 +36,11 @@ export async function POST(req: Request) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 days in seconds (match JWT_EXPIRES_IN)
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     return res;
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  } catch (error) {
+    return handleApiError(error);
   }
 }

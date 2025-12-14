@@ -1,23 +1,35 @@
 // app/api/services/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from "@/lib/prisma";
+import { ValidationError, DatabaseError, handleApiError } from "@/lib/errors";
 
-// GET /api/services?category=Sewins
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const category = searchParams.get("category");
+  try {
+    const { searchParams } = new URL(req.url);
+    const category = searchParams.get("category");
 
-  const services = await prisma.service.findMany({
-    where: category ? { category } : {},
-    orderBy: { createdAt: "desc" },
-  });
+    const services = await prisma.service.findMany({
+      where: category ? { category } : {},
+      orderBy: { createdAt: "desc" },
+    });
 
-  return NextResponse.json(services);
+    return NextResponse.json(services);
+  } catch {
+    return handleApiError(new DatabaseError('Failed to fetch services'));
+  }
 }
 
-// POST /api/services
 export async function POST(req: Request) {
-  const data = await req.json();
-  const service = await prisma.service.create({ data });
-  return NextResponse.json(service);
+  try {
+    const data = await req.json();
+    
+    if (!data.name || !data.price) {
+      throw new ValidationError('Name and price are required');
+    }
+    
+    const service = await prisma.service.create({ data });
+    return NextResponse.json(service);
+  } catch (error) {
+    return handleApiError(error);
+  }
 }

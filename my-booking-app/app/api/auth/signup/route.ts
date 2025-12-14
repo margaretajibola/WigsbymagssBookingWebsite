@@ -2,19 +2,19 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
+import { ValidationError, ConflictError, handleApiError } from "@/lib/errors";
 
 export async function POST(req: Request) {
   try {
     const { email, password, name } = await req.json();
 
     if (!email || !password) {
-      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+      throw new ValidationError("Email and password are required");
     }
 
-    // check existing
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
-      return NextResponse.json({ error: "User already exists" }, { status: 409 });
+      throw new ConflictError("User already exists");
     }
 
     const hashed = await hashPassword(password);
@@ -24,8 +24,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ user });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  } catch (error) {
+    return handleApiError(error);
   }
 }
